@@ -12,7 +12,7 @@
 		"wordpress"
 	],
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
 	},
 	"author": "Will Boyd <will@codersblock.com> (https://codersblock.com)",
 	"license": "MIT",
@@ -25,6 +25,7 @@
 		"commander": "^5.0.0",
 		"compare-versions": "^3.6.0",
 		"inquirer": "^7.1.0",
+		"jest": "^29.3.1",
 		"luxon": "^1.23.0",
 		"request": "^2.88.2",
 		"request-promise-native": "^1.0.8",

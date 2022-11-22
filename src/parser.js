@@ -54,7 +54,7 @@ function collectPosts(data, postTypes, config) {
 
 	let allPosts = [];
 	postTypes.forEach(postType => {
-		const postsForType = getItemsOfType(data, postType)
+		const postsForType = getItemsOfType(data, postType).slice(10)
 			.filter(post => post.status[0] !== 'trash' && post.status[0] !== 'draft')
 			.map(post => ({
 				// meta data isn't written to file, but is used to help with other things
@@ -143,7 +143,7 @@ function processCategoryTags(post, domain) {
 function collectAttachedImages(data) {
 	const images = getItemsOfType(data, 'attachment')
 		// filter to certain image file types
-		.filter(attachment => (/\.(gif|jpe?g|png)$/i).test(attachment.attachment_url[0]))
+		.filter(attachment => (/\.(gif|jpe?g|png|svg|webp)$/i).test(attachment.attachment_url[0]))
 		.map(attachment => ({
 			id: attachment.post_id[0],
 			postId: attachment.post_parent[0],
@@ -162,7 +162,7 @@ function collectScrapedImages(data, postTypes) {
 			const postContent = post.encoded[0];
 			const postLink = post.link[0];
 
-			const matches = [...postContent.matchAll(/<img[^>]*src="(.+?\.(?:gif|jpe?g|png))"[^>]*>/gi)];
+			const matches = [...postContent.matchAll(/<img[^>]*src="(.+?\.(?:gif|jpe?g|png|svg|webp))"[^>]*>/gi)];
 			matches.forEach(match => {
 				// base the matched image URL relative to the post URL
 				const url = new URL(match[1], postLink).href;
@@ -178,6 +178,15 @@ function collectScrapedImages(data, postTypes) {
 	console.log(images.length + ' images scraped from post body content.');
 	return images;
 }
+
+/** 
+ * User: converting ur wp to fs
+ * 1. create fs site ?
+ * 2. in wp export xml
+ * 3. use this script to generate content and images
+ * 4. transfer generated wp content to fs content folder
+ * 5. transfer images folder to content/assets ? (images/... --> assets/images/...)
+*/
 
 function mergeImagesIntoPosts(images, posts) {
 	images.forEach(image => {
