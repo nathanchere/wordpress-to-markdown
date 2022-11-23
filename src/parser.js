@@ -107,6 +107,7 @@ function getPostCoverImageId(post) {
 }
 
 function getPostTitle(post) {
+	// console.log(post.title[0])
 	return post.title[0];
 }
 
