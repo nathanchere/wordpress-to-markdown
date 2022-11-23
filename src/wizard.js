@@ -28,6 +28,12 @@ const options = [
 		default: 'output'
 	},
 	{
+		name: 'assets',
+		type: 'string',
+		description: 'Name of assets folder',
+		default: 'assets'
+	},
+	{
 		name: 'year-folders',
 		aliases: ['yearfolders', 'yearmonthfolders'],
 		type: 'boolean',
