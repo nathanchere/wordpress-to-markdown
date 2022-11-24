@@ -4,5 +4,5 @@ output/
 tmp/
 
 #ignore specific filenames
-export.xml
+*.xml
 .DS_Store
