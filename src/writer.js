@@ -38,7 +38,7 @@ async function processPayloadsPromise(payloads, loadFunc) {
 
 async function writeFile(destinationPath, data) {
 	await fs.promises.mkdir(path.dirname(destinationPath), { recursive: true });
-	await fs.promises.writeFile(destinationPath, data);
+	await fs.promises.writeFile(destinationPath, data, 'utf8');
 }
 
 async function writeMarkdownFilesPromise(posts, config ) {
@@ -80,12 +80,12 @@ async function loadMarkdownFilePromise(post) {
 		if (Array.isArray(value)) {
 			if (value.length > 0) {
 				// array of one or more strings
-				outputValue = value.reduce((list, item) => `${list}\n  - "${item}"`, '');
+				outputValue = value.reduce((list, item) => `${list}\n  - ${item}`, '');
 			}
 		} else {
 			// single string value
 			const escapedValue = (value || '').replace(/"/g, '\\"');
-			outputValue = `"${escapedValue}"`;
+			outputValue = (key === "title" || key === "description") ? `"${escapedValue}"` : `${escapedValue}`;
 		}
 
 		if (outputValue !== undefined) {
