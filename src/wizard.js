@@ -35,16 +35,23 @@ const options = [
 	},
 	{
 		name: 'year-folders',
-		aliases: ['yearfolders', 'yearmonthfolders'],
+		aliases: ['yearfolders', 'yearmonthfolders','yearmonthdayfolders'],
 		type: 'boolean',
 		description: 'Create year folders',
 		default: false
 	},
 	{
 		name: 'month-folders',
-		aliases: ['yearmonthfolders'],
+		aliases: ['yearmonthfolders','yearmonthdayfolders'],
 		type: 'boolean',
 		description: 'Create month folders',
+		default: false
+	},
+	{
+		name: 'day-folders',
+		aliases: ['yearmonthdayfolders'],
+		type: 'boolean',
+		description: 'Create day folders',
 		default: false
 	},
 	{
