@@ -38,7 +38,7 @@ const testPostSlug = path.join(destDir, "post", "non-attachment-to-views-by-jona
 const testFrontmatter =
 `---
 title: "Jonathan Ekstrom: Non Attachment to Views"
-date: 2016-10-06
+created: 2016-10-06
 categories: 
   - book-notes
 tags: 

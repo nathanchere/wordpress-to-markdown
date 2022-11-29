@@ -80,7 +80,7 @@ function collectPosts(data, postTypes, config) {
         },
         frontmatter: {
           title: getPostTitle(post),
-          date: getPostDate(post),
+          created: getPostDate(post),
           categories: getCategories(post),
           tags: getTags(post),
         },
