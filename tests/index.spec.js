@@ -32,7 +32,7 @@ const defaultConfig = {
   includeOtherTypes: true
 }
 
-const testPost = "tests/output/post/non-attachment-to-views-by-jonathan-ekstrom.md"
+const testPostSlug = path.join(destDir, "post", "non-attachment-to-views-by-jonathan-ekstrom.md")
 
 const testFrontmatter =
 `---
@@ -47,13 +47,12 @@ tags:
 
 test("creates an output directory with markdown files", async () => {
   const allDocs = await parser.parseFilePromise(defaultConfig)
-
-  const pages = allDocs.filter(p => ["page"].includes(p.meta.type)).slice(0,2)
-  const posts = allDocs.filter(p => ["post"].includes(p.meta.type)).slice(0,2)
+  const pages = allDocs.filter(p => ["page"].includes(p.meta.type)).slice(0,1)
+  const posts = allDocs.filter(p => ["post"].includes(p.meta.type)).slice(0,1)
 
   const slicedPosts = [ ...pages, ...posts ]
 
-  fs.rmSync(destDir, { recursive: true, force: true });
+  if (fs.existsSync(destDir)) fs.rmSync(destDir, { recursive: true, force: true });
   await writer.writeFilesPromise(slicedPosts, defaultConfig);
 
   expect(fs.existsSync(destDir)).toBe(true)
@@ -61,9 +60,27 @@ test("creates an output directory with markdown files", async () => {
 
 test("outputs the frontmatter in markdown", () => {
   getFilesRecursively(destDir)
-  const file = files.find(f => f === testPost)
+  const file = files.find(f => f === testPostSlug)
   const fileContent = fs.readFileSync(file, "utf8")
   const fileFrontmatter = fileContent.substring(0, fileContent.lastIndexOf("---") + 3)
 
   expect(fileFrontmatter).toMatch(testFrontmatter)
+})
+
+test("parses the frontmatter title correctly", async () => {
+  const allDocs = await parser.parseFilePromise(defaultConfig)
+  const page = allDocs.find(f => f.meta.slug === "imaginary-society")
+
+  expect(page.frontmatter.title).toEqual("Imaginary Society")
+})
+
+test("contains frontmatter image field", async () => {
+  const config = {
+    ...defaultConfig,
+    saveAttachedImages: true
+  }
+  const allDocs = await parser.parseFilePromise(config)
+  const post = allDocs.find(f => f.meta.slug === "can-digital-businesses-thrive-and-be-mindful")
+
+  expect(post.frontmatter.image).toBeDefined()
 })
