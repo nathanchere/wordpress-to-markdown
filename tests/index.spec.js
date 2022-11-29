@@ -23,6 +23,7 @@ const destDir = 'tests/output'
 const defaultConfig = {
   input: './lifeitself.xml',
   output: destDir,
+  assets: 'assets',
   yearFolders: false,
   monthFolders: false,
   postFolders: false,
@@ -83,4 +84,5 @@ test("contains frontmatter image field", async () => {
   const post = allDocs.find(f => f.meta.slug === "can-digital-businesses-thrive-and-be-mindful")
 
   expect(post.frontmatter.image).toBeDefined()
+  expect(post.frontmatter.image).toBe("assets/images/Blog-Feature-Images-14.png")
 })
