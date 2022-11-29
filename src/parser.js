@@ -120,11 +120,12 @@ function getPostCoverImageId(post) {
 }
 
 function getPostTitle(post) {
-  //console.log(post)
-  //if title has Html in it, return the post name instead
+  // if title has Html in it, return the post name instead
   const re = /^</;
   if (re.test(post.title[0])) {
-    return post.post_name[0];
+    const title = post.post_name[0].replace("-", " ")
+    // capitalize each word
+    return title.replace(/(^\w|\s\w)(\S*)/g, (_,m1,m2) => m1.toUpperCase()+m2.toLowerCase());
   } else {
     return post.title[0];
   }
@@ -230,7 +231,7 @@ function mergeImagesIntoPosts(images, posts) {
       // this image was set as the featured image for this post
       if (image.id === post.meta.coverImageId) {
         shouldAttach = true;
-        post.frontmatter.coverImage = shared.getFilenameFromUrl(image.url);
+        post.frontmatter.image = shared.getFilenameFromUrl(image.url);
       }
 
       if (shouldAttach && !post.meta.imageUrls.includes(image.url)) {
