@@ -83,6 +83,7 @@ function collectPosts(data, postTypes, config) {
           created: getPostDate(post),
           categories: getCategories(post),
           tags: getTags(post),
+          authors: getAuthors(post)
         },
         content: translator.getPostContent(post, turndownService, config),
       }));
@@ -130,6 +131,10 @@ function getPostTitle(post) {
   } else {
     return post.title[0];
   }
+}
+
+function getAuthors(post) {
+  return post.creator[0].split(" and ")
 }
 
 function getPostDate(post) {
