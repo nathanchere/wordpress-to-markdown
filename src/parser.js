@@ -45,12 +45,14 @@ function getPostTypes(data, config) {
             "nav_menu_item",
             "custom_css",
             "customize_changeset",
+            "mc4wp-form",
+            "wp_global_styles",
           ].includes(type)
       );
     return [...new Set(types)]; // remove duplicates
   } else {
     // just plain old vanilla "post" posts
-    return ["post"];
+    return ["blog"];
   }
 }
 

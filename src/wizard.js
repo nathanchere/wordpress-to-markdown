@@ -25,7 +25,7 @@ const options = [
 		name: 'output',
 		type: 'folder',
 		description: 'Path to output folder',
-		default: 'output'
+		default: 'content'
 	},
 	{
 		name: 'assets',
