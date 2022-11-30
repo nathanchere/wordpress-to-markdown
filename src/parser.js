@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path")
 const luxon = require("luxon");
 const xml2js = require("xml2js");
 
@@ -25,7 +26,7 @@ async function parseFilePromise(config) {
     images.push(...collectScrapedImages(data, postTypes));
   }
 
-  mergeImagesIntoPosts(images, posts);
+  mergeImagesIntoPosts(images, posts, config);
 
   return posts;
 }
@@ -79,7 +80,7 @@ function collectPosts(data, postTypes, config) {
         },
         frontmatter: {
           title: getPostTitle(post),
-          date: getPostDate(post),
+          created: getPostDate(post),
           categories: getCategories(post),
           tags: getTags(post),
         },
@@ -120,11 +121,12 @@ function getPostCoverImageId(post) {
 }
 
 function getPostTitle(post) {
-  //console.log(post)
-  //if title has Html in it, return the post name instead
+  // if title has Html in it, return the post name instead
   const re = /^</;
   if (re.test(post.title[0])) {
-    return post.post_name[0];
+    const title = post.post_name[0].replace("-", " ")
+    // capitalize each word
+    return title.replace(/(^\w|\s\w)(\S*)/g, (_,m1,m2) => m1.toUpperCase()+m2.toLowerCase());
   } else {
     return post.title[0];
   }
@@ -217,7 +219,7 @@ function collectScrapedImages(data, postTypes) {
  * 5. transfer images folder to content/assets ? (images/... --> assets/images/...)
  */
 
-function mergeImagesIntoPosts(images, posts) {
+function mergeImagesIntoPosts(images, posts, config) {
   images.forEach((image) => {
     posts.forEach((post) => {
       let shouldAttach = false;
@@ -230,7 +232,7 @@ function mergeImagesIntoPosts(images, posts) {
       // this image was set as the featured image for this post
       if (image.id === post.meta.coverImageId) {
         shouldAttach = true;
-        post.frontmatter.coverImage = shared.getFilenameFromUrl(image.url);
+        post.frontmatter.image = path.join(config.assets, "images", shared.getFilenameFromUrl(image.url));
       }
 
       if (shouldAttach && !post.meta.imageUrls.includes(image.url)) {
