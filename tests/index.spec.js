@@ -33,7 +33,7 @@ const defaultConfig = {
   includeOtherTypes: true
 }
 
-const testPostSlug = path.join(destDir, "post", "non-attachment-to-views-by-jonathan-ekstrom.md")
+const testPostSlug = path.join(destDir, "blog", "non-attachment-to-views-by-jonathan-ekstrom.md")
 
 const testFrontmatter =
 `---
@@ -44,6 +44,8 @@ categories:
 tags: 
   - jonathan-ekstrom
   - non-attachment
+authors: 
+  - rufuspollock
 ---`
 
 test("creates an output directory with markdown files", async () => {
