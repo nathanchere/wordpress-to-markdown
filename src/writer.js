@@ -54,7 +54,7 @@ async function writeMarkdownFilesPromise(posts, config ) {
 		} else {
 			const payload = {
 				item: post,
-				name: (config.includeOtherTypes ? post.meta.type + ' - ' : '') + post.meta.slug,
+				name: (!config.includeOtherTypes ? '': post.meta.type === "post" ? "blog" + ' - ' : post.meta.type + ' - ') + post.meta.slug,
 				destinationPath,
 				delay
 			};
@@ -104,7 +104,7 @@ async function writeImageFilesPromise(posts, config) {
 	const payloads = posts.flatMap(post => {
 		// const postPath = getPostPath(post, config);
 		// const imagesDir = path.join(path.dirname(postPath), 'images');
-		const imagesDir = path.join(config.output, 'images');
+		const imagesDir = path.join(config.output, 'assets/images');
 		return post.meta.imageUrls.flatMap(imageUrl => {
 			const filename = shared.getFilenameFromUrl(imageUrl);
 			const destinationPath = path.join(imagesDir, filename);
@@ -165,7 +165,7 @@ function getPostPath(post, config) {
 
 	// create segment for post type if we're dealing with more than just "post"
 	if (config.includeOtherTypes) {
-		pathSegments.push(post.meta.type);
+		pathSegments.push(post.meta.type === "post" ? "blog" : post.meta.type == "page" ? "" : post.meta.type);
 	}
 
 	if (config.yearFolders) {

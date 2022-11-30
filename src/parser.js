@@ -45,12 +45,14 @@ function getPostTypes(data, config) {
             "nav_menu_item",
             "custom_css",
             "customize_changeset",
+            "mc4wp-form",
+            "wp_global_styles",
           ].includes(type)
       );
     return [...new Set(types)]; // remove duplicates
   } else {
     // just plain old vanilla "post" posts
-    return ["post"];
+    return ["blog"];
   }
 }
 
@@ -83,6 +85,7 @@ function collectPosts(data, postTypes, config) {
           created: getPostDate(post),
           categories: getCategories(post),
           tags: getTags(post),
+          authors: getAuthors(post)
         },
         content: translator.getPostContent(post, turndownService, config),
       }));
@@ -130,6 +133,10 @@ function getPostTitle(post) {
   } else {
     return post.title[0];
   }
+}
+
+function getAuthors(post) {
+  return post.creator[0].split(" and ")
 }
 
 function getPostDate(post) {
