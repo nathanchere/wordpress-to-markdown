@@ -107,7 +107,10 @@ async function writeImageFilesPromise(posts, config) {
 		const imagesDir = path.join(config.output, 'assets/images');
 		return post.meta.imageUrls.flatMap(imageUrl => {
 			const filename = shared.getFilenameFromUrl(imageUrl);
-			const destinationPath = path.join(imagesDir, filename);
+			const isPdfDocument = /.pdf$/.test(filename)
+			const destinationPath = isPdfDocument 
+				? path.join(config.output + "/assets", filename)
+				: path.join(imagesDir, filename);
 			if (checkFile(destinationPath)) {
 				// already exists, don't need to save again
 				skipCount++;

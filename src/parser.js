@@ -176,7 +176,7 @@ function collectAttachedImages(data) {
   const images = getItemsOfType(data, "attachment")
     // filter to certain image file types
     .filter((attachment) =>
-      /\.(gif|jpe?g|png|svg|webp)$/i.test(attachment.attachment_url[0])
+      /\.(gif|jpe?g|png|svg|webp|pdf)$/i.test(attachment.attachment_url[0])
     )
     .map((attachment) => ({
       id: attachment.post_id[0],
@@ -216,15 +216,6 @@ function collectScrapedImages(data, postTypes) {
   console.log(images.length + " images scraped from post body content.");
   return images;
 }
-
-/**
- * User: converting ur wp to fs
- * 1. create fs site ?
- * 2. in wp export xml
- * 3. use this script to generate content and images
- * 4. transfer generated wp content to fs content folder
- * 5. transfer images folder to content/assets ? (images/... --> assets/images/...)
- */
 
 function mergeImagesIntoPosts(images, posts, config) {
   images.forEach((image) => {
