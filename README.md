@@ -19,7 +19,6 @@ And **VOILÀ!** You can then add it to your new or existing flowershow site!
 
 ## Here's how it works in 3 simple steps:
 
-> [!note]
 > You should have Node installed
 
 ### 1. Export your wordpress instance content to xml
@@ -28,11 +27,11 @@ Export your wordpress instance content to xml. Use the in-built standard wordpre
 
 1. Got to the tools section and choose export
 
-![[toolexport.png]]
+![toolexport](https://user-images.githubusercontent.com/44789132/206124600-e9f60009-6bcb-4906-ae07-1c5161059f58.PNG)
 
 2. Choose the `All content` export option
 
-![[exportall.png]]
+![exportall](https://user-images.githubusercontent.com/44789132/206124673-afca6192-f3ee-4ed1-a99f-071d9afef35d.PNG)
 
 3. Save the resulting file on your local computer by pressing the `Download Export File` button
 
@@ -47,7 +46,7 @@ Run the following in your preferred terminal:
 
 ### 3. Then fill in the wizard:
 
-![[tpO8ISZ.png]]
+![tpO8ISZ](https://user-images.githubusercontent.com/44789132/206124793-270cb5ed-e964-4e56-b72e-6cfec42f276c.png)
 
 - In this example the xml file has been renamed to `new` and placed in a folder `wordpress-test` next to where the tool is being run. Use the relative path to where the xml file is located.
 - The path of your output folder should end with `/content`
@@ -55,5 +54,4 @@ Run the following in your preferred terminal:
 - Your content folder is now ready to be converted into a flowershow site! 🚀 See [publish-tutorial](https://flowershow.app/docs/publish-tutorial) to create your site!
 - Any **tags** or **categories** listed in a post will be present in the frontmatter of that post.
 
-> [!note]
 > If you have created a flowershow site prior to this, just copy all the files from the `content` folder created by the script into the `content` folder used by flowershow.
