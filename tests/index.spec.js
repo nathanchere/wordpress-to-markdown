@@ -3,88 +3,112 @@ const path = require("path");
 const parser = require("../src/parser.js");
 const writer = require( "../src/writer.js");
 
-let files = [];
-
-const getFilesRecursively = (directory) => {
-  const filesInDirectory = fs.readdirSync(directory);
-  for (const file of filesInDirectory) {
-    const absolute = path.join(directory, file);
-    if (fs.statSync(absolute).isDirectory()) {
-        getFilesRecursively(absolute);
-    } else {
-        files.push(absolute);
-    }
-  }
-  return files
-};
-
-const destDir = 'tests/output'
+const destDir = 'tests/content'
 
 const defaultConfig = {
-  input: './lifeitself.xml',
+  input: './tests/fixtures/testing.wordpress.xml',
   output: destDir,
   assets: 'assets',
   yearFolders: false,
   monthFolders: false,
+  dayFolders: false,
   postFolders: false,
   prefixDate: false,
-  saveAttachedImages: false,
-  saveScrapedImages: false,
+  saveAttachedImages: true,
+  saveScrapedImages: true,
   includeOtherTypes: true
 }
 
-const testPostSlug = path.join(destDir, "blog", "non-attachment-to-views-by-jonathan-ekstrom.md")
-
-const testFrontmatter =
-`---
-title: "Jonathan Ekstrom: Non Attachment to Views"
-created: 2016-10-06
-categories: 
-  - book-notes
-tags: 
-  - jonathan-ekstrom
-  - non-attachment
-authors: 
-  - rufuspollock
----`
-
-test("creates an output directory with markdown files", async () => {
+// create a content folder with one page and one blog post
+beforeAll(async () => {
   const allDocs = await parser.parseFilePromise(defaultConfig)
-  const pages = allDocs.filter(p => ["page"].includes(p.meta.type)).slice(0,1)
-  const posts = allDocs.filter(p => ["post"].includes(p.meta.type)).slice(0,1)
+  const pages = allDocs.filter(p => ["page"].includes(p.meta.type))
+  const posts = allDocs.filter(p => ["post"].includes(p.meta.type))
 
   const slicedPosts = [ ...pages, ...posts ]
 
   if (fs.existsSync(destDir)) fs.rmSync(destDir, { recursive: true, force: true });
   await writer.writeFilesPromise(slicedPosts, defaultConfig);
+})
 
+test("creates a content directory with markdown files", () => {
   expect(fs.existsSync(destDir)).toBe(true)
+  expect(fs.existsSync(path.join(destDir, "blog"))).toBe(true)
 })
 
-test("outputs the frontmatter in markdown", () => {
-  getFilesRecursively(destDir)
-  const file = files.find(f => f === testPostSlug)
-  const fileContent = fs.readFileSync(file, "utf8")
-  const fileFrontmatter = fileContent.substring(0, fileContent.lastIndexOf("---") + 3)
+describe("Pages", () => {
+  let page = path.join(destDir, "sample-page.md")
 
-  expect(fileFrontmatter).toMatch(testFrontmatter)
+  const frontmatter =
+`---
+title: "About"
+created: 2022-12-07
+authors: 
+  - rufus6922c5bca9
+---`
+
+  test("creates page in content's root folder", () => {
+    expect(fs.existsSync(page)).toBe(true)
+  })
+
+  test("page has frontmatter fields", () => {
+    const fileContents = fs.readFileSync(page, "utf-8")
+    const fileFrontmatter = fileContents.substring(0, fileContents.lastIndexOf("---") + 3)
+
+    expect(fileFrontmatter).toMatch(frontmatter)
+  })
 })
 
-test("parses the frontmatter title correctly", async () => {
-  const allDocs = await parser.parseFilePromise(defaultConfig)
-  const page = allDocs.find(f => f.meta.slug === "imaginary-society")
+describe("Blog posts", () => {
+  let blogPost = path.join(destDir, "blog/nicomachean-ethics-by-aristotle.md")
 
-  expect(page.frontmatter.title).toEqual("Imaginary Society")
+  const frontmatter =
+`---
+title: "Nicomachean Ethics by Aristotle"
+created: 2022-12-07
+categories: 
+  - developer
+  - digital-nomad
+tags: 
+  - climate-change
+  - data
+authors: 
+  - rufus6922c5bca9
+image: assets/images/70eac-img_5-min.png
+---`
+
+  test("creates blog post in blog folder", () => {
+    expect(fs.existsSync(blogPost)).toBe(true)
+  })
+
+  test("blog post has required frontmatter fields", () => {
+    const fileContents = fs.readFileSync(blogPost, "utf-8")
+    const fileFrontmatter = fileContents.substring(0, fileContents.lastIndexOf("---") + 3)
+    expect(fileFrontmatter).toMatch(frontmatter)
+  })
 })
 
-test("contains frontmatter image field", async () => {
-  const config = {
-    ...defaultConfig,
-    saveAttachedImages: true
-  }
-  const allDocs = await parser.parseFilePromise(config)
-  const post = allDocs.find(f => f.meta.slug === "can-digital-businesses-thrive-and-be-mindful")
+describe("Assets" , () => {
+  let assetsFolder = path.join(destDir, "assets")
 
-  expect(post.frontmatter.image).toBeDefined()
-  expect(post.frontmatter.image).toBe("assets/images/Blog-Feature-Images-14.png")
+  test("creates an assets folder", () => {
+    expect(fs.existsSync(assetsFolder)).toBe(true)
+  })
+
+  test("creates a pdf in assets folder", () => {
+    let pdfFile = path.join(assetsFolder,"hexagonal.pdf")
+    expect(fs.existsSync(pdfFile)).toBe(true)
+  })
+
+  test("creates a image in assets/images folder", () => {
+    let imageFile = path.join(assetsFolder,"images/70eac-img_5-min.png")
+    expect(fs.existsSync(imageFile)).toBe(true)
+  })
 })
+
+// test("parses the frontmatter title correctly", async () => {
+//   const allDocs = await parser.parseFilePromise(defaultConfig)
+//   const page = allDocs.find(f => f.meta.slug === "imaginary-society")
+
+//   expect(page.frontmatter.title).toEqual("Imaginary Society")
+// })

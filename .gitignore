@@ -1,9 +1,7 @@
 # ignore directories
 node_modules/
-output/
 content/
 tmp/
 
 #ignore specific filenames
-*.xml
 .DS_Store
