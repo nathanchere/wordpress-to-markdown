@@ -161,7 +161,7 @@ async function loadImageFilePromise(imageUrl) {
 }
 
 function getPostPath(post, config) {
-	const dt = luxon.DateTime.fromISO(post.frontmatter.date);
+	const dt = luxon.DateTime.fromISO(post.frontmatter.created);
 
 	// start with base output dir
 	const pathSegments = [config.output];
@@ -171,15 +171,15 @@ function getPostPath(post, config) {
 		pathSegments.push(post.meta.type === "post" ? "blog" : post.meta.type == "page" ? "" : post.meta.type);
 	}
 
-	if (config.yearFolders) {
+	if (config.yearFolders && post.meta.type !== "page") {
 		pathSegments.push(dt.toFormat('yyyy'));
 	}
 
-	if (config.monthFolders) {
+	if (config.monthFolders && post.meta.type !== "page") {
 		pathSegments.push(dt.toFormat('LL'));
 	}
 
-	if (config.dayFolders) {
+	if (config.dayFolders && post.meta.type !== "page") {
 		pathSegments.push(dt.toFormat('dd'));
 	}
 
