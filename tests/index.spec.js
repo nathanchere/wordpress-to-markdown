@@ -19,7 +19,7 @@ const defaultConfig = {
   includeOtherTypes: true
 }
 
-// create a content folder with one page and one blog post
+// create a content folder with pages and blog posts
 beforeAll(async () => {
   const allDocs = await parser.parseFilePromise(defaultConfig)
   const pages = allDocs.filter(p => ["page"].includes(p.meta.type))
@@ -61,6 +61,8 @@ authors:
 
 describe("Blog posts", () => {
   let blogPost = path.join(destDir, "blog/nicomachean-ethics-by-aristotle.md")
+  const fileContents = fs.readFileSync(blogPost, "utf-8")
+  const fileFrontmatter = fileContents.substring(0, fileContents.lastIndexOf("---") + 3)
 
   const frontmatter =
 `---
@@ -77,14 +79,18 @@ authors:
 image: /assets/images/70eac-img_5-min.png
 ---`
 
+const imageWithPath = "![](assets/images/70eac-img_5-min.png)"
+
   test("creates blog post in blog folder", () => {
     expect(fs.existsSync(blogPost)).toBe(true)
   })
 
   test("blog post has required frontmatter fields", () => {
-    const fileContents = fs.readFileSync(blogPost, "utf-8")
-    const fileFrontmatter = fileContents.substring(0, fileContents.lastIndexOf("---") + 3)
     expect(fileFrontmatter).toMatch(frontmatter)
+  })
+
+  test("image with path exists in the page's content", () => {
+    expect(fileContents).toContain(imageWithPath)
   })
 })
 
