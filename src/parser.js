@@ -230,7 +230,7 @@ function mergeImagesIntoPosts(images, posts, config) {
       // this image was set as the featured image for this post
       if (image.id === post.meta.coverImageId) {
         shouldAttach = true;
-        post.frontmatter.image = path.join(config.assets, "images", shared.getFilenameFromUrl(image.url));
+        post.frontmatter.image = path.join(`/${config.assets}`, "images", shared.getFilenameFromUrl(image.url));
       }
 
       if (shouldAttach && !post.meta.imageUrls.includes(image.url)) {
