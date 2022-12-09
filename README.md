@@ -55,3 +55,17 @@ Run the following in your preferred terminal:
 - Any **tags** or **categories** listed in a post will be present in the frontmatter of that post.
 
 > If you have created a flowershow site prior to this, just copy all the files from the `content` folder created by the script into the `content` folder used by flowershow.
+
+## Developers
+
+Running the tests
+
+1. Include your exported wordpress `.xml` file in the fixtures folder ie. `./tests/fixtures/<your-wordpress-file>.xml`
+2. Change the input in `defaultConfig` in `tests/index.spec.js` to you wordpress filename.
+3. Run the test
+
+```bash
+npm run test
+```
+
+Your wordpress content folder will be generated - `./tests/content`
