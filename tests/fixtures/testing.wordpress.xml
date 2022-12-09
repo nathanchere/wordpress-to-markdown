@@ -17,13 +17,13 @@
  7. WordPress will then import each of the posts, pages, comments, categories, etc.
     contained in this file into your site.
 -->
-<!-- generator="WordPress.com" created="2022-12-08 13:35"-->
+<!-- generator="WordPress.com" created="2022-12-09 12:25"-->
 <rss version="2.0" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
   <channel>
 <title>Wordpress to Markdown Testing</title>
 <link>https://wptomarkdowntest.wordpress.com</link>
 <description/>
-<pubDate>Thu, 08 Dec 2022 13:35:51 +0000</pubDate>
+<pubDate>Fri, 09 Dec 2022 12:25:51 +0000</pubDate>
 <language>en</language>
 <wp:wxr_version>1.2</wp:wxr_version>
 <wp:base_site_url>http://wordpress.com/</wp:base_site_url>
@@ -199,25 +199,33 @@
     <wp:meta_key>_thumbnail_id</wp:meta_key>
     <wp:meta_value><![CDATA[16]]></wp:meta_value>
   </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>_last_editor_used_jetpack</wp:meta_key>
+    <wp:meta_value><![CDATA[block-editor]]></wp:meta_value>
+  </wp:postmeta>
 </item>
 <item>
-  <title><![CDATA[About]]></title>
-  <link>https://wptomarkdowntest.wordpress.com/sample-page/</link>
+  <title><![CDATA[Home]]></title>
+  <link>https://wptomarkdowntest.wordpress.com/</link>
   <pubDate>Wed, 07 Dec 2022 14:18:19 +0000</pubDate>
   <dc:creator>rufus6922c5bca9</dc:creator>
   <guid isPermaLink="false">https://wptomarkdowntest.wordpress.com/sample-page/</guid>
   <description/>
   <content:encoded><![CDATA[<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1.6"}},"fontSize":"medium"} -->
-<p class="has-medium-font-size" style="line-height:1.6">Hello! My name is Adrian DeCarlo and this is <em>Mindblown</em>, my personal blog about philosophy with book summaries and reviews. I like to immerse myself in books and learn what others have to say about life. </p>
+<p class="has-medium-font-size" style="line-height:1.6">Hello! This is <em>Wordpress to Markdown</em>, a site about converting wordpress to markdown - plus some philosophy! I like to immerse myself in books and learn what others have to say about life. </p>
 <!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1.6"}},"fontSize":"medium"} -->
+<p class="has-medium-font-size" style="line-height:1.6">You can find me online in the links below or just send me a <a href="hello@world.net">message</a> to say hi. Here is a <a rel="noreferrer noopener" href="/2022/12/07/nicomachean-ethics-by-aristotle/" target="_blank">link</a> to one of the posts.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading">Example of a link to a PDF</h3>
+<!-- /wp:heading -->
 
 <!-- wp:file {"id":22,"href":"https://wptomarkdowntest.files.wordpress.com/2022/12/hexagonal.pdf","displayPreview":true} -->
 <div class="wp-block-file"><object class="wp-block-file__embed" data="https://wptomarkdowntest.files.wordpress.com/2022/12/hexagonal.pdf" type="application/pdf" style="width:100%;height:600px" aria-label="hexagonal"></object><a id="wp-block-file--media-51a33837-359c-4748-9912-2f9fa8dc3081" href="https://wptomarkdowntest.files.wordpress.com/2022/12/hexagonal.pdf">hexagonal</a><a href="https://wptomarkdowntest.files.wordpress.com/2022/12/hexagonal.pdf" class="wp-block-file__button wp-element-button" download aria-describedby="wp-block-file--media-51a33837-359c-4748-9912-2f9fa8dc3081">Download</a></div>
 <!-- /wp:file -->
-
-<!-- wp:paragraph {"style":{"typography":{"lineHeight":"1.6"}},"fontSize":"medium"} -->
-<p class="has-medium-font-size" style="line-height:1.6">You can find me online in the links below or just send me a <a href="https://2023.wordpress.net">message</a> to say hi. Here is a <a href="https://wordpress.com/post/wptomarkdowntest.wordpress.com/8" target="_blank" rel="noreferrer noopener">link</a> to one of the posts.</p>
-<!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
 <p></p>
@@ -236,8 +244,8 @@
   <wp:post_id>11</wp:post_id>
   <wp:post_date>2022-12-07 15:18:19</wp:post_date>
   <wp:post_date_gmt>2022-12-07 14:18:19</wp:post_date_gmt>
-  <wp:post_modified>2022-12-08 10:40:34</wp:post_modified>
-  <wp:post_modified_gmt>2022-12-08 09:40:34</wp:post_modified_gmt>
+  <wp:post_modified>2022-12-09 12:34:30</wp:post_modified>
+  <wp:post_modified_gmt>2022-12-09 11:34:30</wp:post_modified_gmt>
   <wp:comment_status>closed</wp:comment_status>
   <wp:ping_status>open</wp:ping_status>
   <wp:post_name>sample-page</wp:post_name>
@@ -644,7 +652,7 @@
 </item>
 <item>
   <title><![CDATA[Products]]></title>
-  <link>https://wptomarkdowntest.wordpress.com/products/</link>
+  <link>https://wptomarkdowntest.wordpress.com/?page_id=29</link>
   <pubDate>Thu, 08 Dec 2022 10:00:59 +0000</pubDate>
   <dc:creator>philippedupreezlifeitself</dc:creator>
   <guid isPermaLink="false">https://wptomarkdowntest.wordpress.com/?page_id=29</guid>
@@ -656,12 +664,12 @@
   <wp:post_id>29</wp:post_id>
   <wp:post_date>2022-12-08 11:00:59</wp:post_date>
   <wp:post_date_gmt>2022-12-08 10:00:59</wp:post_date_gmt>
-  <wp:post_modified>2022-12-08 11:00:59</wp:post_modified>
-  <wp:post_modified_gmt>2022-12-08 10:00:59</wp:post_modified_gmt>
+  <wp:post_modified>2022-12-09 12:28:27</wp:post_modified>
+  <wp:post_modified_gmt>2022-12-09 11:28:27</wp:post_modified_gmt>
   <wp:comment_status>closed</wp:comment_status>
   <wp:ping_status>closed</wp:ping_status>
-  <wp:post_name>products</wp:post_name>
-  <wp:status>publish</wp:status>
+  <wp:post_name>products__trashed</wp:post_name>
+  <wp:status>trash</wp:status>
   <wp:post_parent>0</wp:post_parent>
   <wp:menu_order>0</wp:menu_order>
   <wp:post_type>page</wp:post_type>
@@ -686,6 +694,18 @@
   <wp:postmeta>
     <wp:meta_key>_starter_page_template</wp:meta_key>
     <wp:meta_value><![CDATA[blank]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>_wp_trash_meta_status</wp:meta_key>
+    <wp:meta_value><![CDATA[publish]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>_wp_trash_meta_time</wp:meta_key>
+    <wp:meta_value><![CDATA[1670585307]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>_wp_desired_post_slug</wp:meta_key>
+    <wp:meta_value><![CDATA[products]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>
@@ -719,6 +739,72 @@
   <wp:postmeta>
     <wp:meta_key>_wp_attachment_metadata</wp:meta_key>
     <wp:meta_value><![CDATA[a:1:{s:8:"filesize";i:4734;}]]></wp:meta_value>
+  </wp:postmeta>
+</item>
+<item>
+  <title><![CDATA[Blog]]></title>
+  <link>https://wptomarkdowntest.wordpress.com/blog/</link>
+  <pubDate>Fri, 09 Dec 2022 11:27:21 +0000</pubDate>
+  <dc:creator>rufus6922c5bca9</dc:creator>
+  <guid isPermaLink="false">https://wptomarkdowntest.wordpress.com/?page_id=36</guid>
+  <description/>
+  <content:encoded><![CDATA[<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"7vw","bottom":"7vw"},"margin":{"top":"0px","bottom":"0px"}}},"layout":{"inherit":true,"type":"constrained"}} -->
+<div class="wp-block-group alignfull" style="margin-top:0px;margin-bottom:0px;padding-top:7vw;padding-bottom:7vw"><!-- wp:query {"queryId":16,"query":{"perPage":6,"pages":0,"offset":"0","postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"exclude","inherit":false},"displayLayout":{"type":"flex","columns":3},"align":"wide"} -->
+<div class="wp-block-query alignwide"><!-- wp:post-template -->
+<!-- wp:group {"style":{"spacing":{"blockGap":"1.5rem","padding":{"bottom":"1.5rem"}}}} -->
+<div class="wp-block-group" style="padding-bottom:1.5rem"><!-- wp:post-featured-image {"isLink":true} /-->
+
+<!-- wp:post-title {"isLink":true,"style":{"elements":{"link":{"color":{"text":"var:preset|color|foreground"}}},"typography":{"lineHeight":"1.3"}},"fontSize":"medium"} /-->
+
+<!-- wp:post-excerpt {"moreText":"Read more","showMoreOnNewLine":false,"fontSize":"small"} /-->
+
+<!-- wp:post-date {"fontSize":"small"} /--></div>
+<!-- /wp:group -->
+<!-- /wp:post-template -->
+
+<!-- wp:query-pagination {"paginationArrow":"arrow","layout":{"type":"flex","justifyContent":"space-between"}} -->
+<!-- wp:query-pagination-previous /-->
+
+<!-- wp:query-pagination-numbers /-->
+
+<!-- wp:query-pagination-next /-->
+<!-- /wp:query-pagination --></div>
+<!-- /wp:query --></div>
+<!-- /wp:group -->]]></content:encoded>
+  <excerpt:encoded><![CDATA[]]></excerpt:encoded>
+  <wp:post_id>36</wp:post_id>
+  <wp:post_date>2022-12-09 12:27:21</wp:post_date>
+  <wp:post_date_gmt>2022-12-09 11:27:21</wp:post_date_gmt>
+  <wp:post_modified>2022-12-09 12:27:21</wp:post_modified>
+  <wp:post_modified_gmt>2022-12-09 11:27:21</wp:post_modified_gmt>
+  <wp:comment_status>closed</wp:comment_status>
+  <wp:ping_status>closed</wp:ping_status>
+  <wp:post_name>blog</wp:post_name>
+  <wp:status>publish</wp:status>
+  <wp:post_parent>0</wp:post_parent>
+  <wp:menu_order>0</wp:menu_order>
+  <wp:post_type>page</wp:post_type>
+  <wp:post_password/>
+  <wp:is_sticky>0</wp:is_sticky>
+  <wp:postmeta>
+    <wp:meta_key>_last_editor_used_jetpack</wp:meta_key>
+    <wp:meta_value><![CDATA[block-editor]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>_publicize_pending</wp:meta_key>
+    <wp:meta_value><![CDATA[1]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>jetpack_seo_noindex</wp:meta_key>
+    <wp:meta_value><![CDATA[]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>_jetpack_post_was_ever_published</wp:meta_key>
+    <wp:meta_value><![CDATA[]]></wp:meta_value>
+  </wp:postmeta>
+  <wp:postmeta>
+    <wp:meta_key>_starter_page_template</wp:meta_key>
+    <wp:meta_value><![CDATA[grid-of-posts-3x2]]></wp:meta_value>
   </wp:postmeta>
 </item>
 <item>

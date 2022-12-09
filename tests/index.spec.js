@@ -41,7 +41,7 @@ describe("Pages", () => {
 
   const frontmatter =
 `---
-title: "About"
+title: "Home"
 created: 2022-12-07
 authors: 
   - rufus6922c5bca9
@@ -74,7 +74,7 @@ tags:
   - data
 authors: 
   - rufus6922c5bca9
-image: assets/images/70eac-img_5-min.png
+image: /assets/images/70eac-img_5-min.png
 ---`
 
   test("creates blog post in blog folder", () => {
