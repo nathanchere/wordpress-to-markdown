@@ -58,7 +58,7 @@ Run the following in your preferred terminal:
 
 ## Developers
 
-Running the tests
+For running the tests with your own wordpress file, do the following or skip to step 3.
 
 1. Include your exported wordpress `.xml` file in the fixtures folder ie. `./tests/fixtures/<your-wordpress-file>.xml`
 2. Change the input in `defaultConfig` in `tests/index.spec.js` to you wordpress filename.
