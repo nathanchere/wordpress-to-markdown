@@ -67,7 +67,7 @@ function getPostContent(post, turndownService, config) {
 	if (config.saveScrapedImages) {
 		// writeImageFile() will save all content images to a relative /images
 		// folder so update references in post content to match
-		content = content.replace(/(<img[^>]*src=").*?([^\/"]+\.(?:gif|jpe?g|png|svg|webp))(\?.*)("[^>]*>)/gi, `$1${config.assets}/images/$2$4`);
+		content = content.replace(/(<img[^>]*src=").*?([^\/"]+\.(?:gif|jpe?g|png|svg|webp))(.*?)("[^>]*>)/gi, `$1${config.assets}/images/$2$4`);
 		content = content.replace(/(<a[^>]*href=").*?([^\/"]+\.(?:pdf))("[^>]*>)/gi, `$1${config.assets}/$2$3`)
 	}
 
