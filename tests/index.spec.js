@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const parser = require("../src/parser.js");
 const writer = require( "../src/writer.js");
+const fm = require("front-matter")
 
 const destDir = 'tests/content'
 
@@ -24,8 +25,9 @@ beforeAll(async () => {
   const allDocs = await parser.parseFilePromise(defaultConfig)
   const pages = allDocs.filter(p => ["page"].includes(p.meta.type))
   const posts = allDocs.filter(p => ["post"].includes(p.meta.type))
+  const authors = allDocs.filter(p => ["authors"].includes(p.meta.type))
 
-  const slicedPosts = [ ...pages, ...posts ]
+  const slicedPosts = [ ...pages, ...posts, ...authors ]
 
   if (fs.existsSync(destDir)) fs.rmSync(destDir, { recursive: true, force: true });
   await writer.writeFilesPromise(slicedPosts, defaultConfig);
@@ -34,6 +36,7 @@ beforeAll(async () => {
 test("creates a content directory with markdown files", () => {
   expect(fs.existsSync(destDir)).toBe(true)
   expect(fs.existsSync(path.join(destDir, "blog"))).toBe(true)
+  expect(fs.existsSync(path.join(destDir, "authors"))).toBe(true)
 })
 
 describe("Pages", () => {
@@ -91,6 +94,32 @@ const imageWithPath = "![](assets/images/70eac-img_5-min.png)"
 
   test("image with path exists in the page's content", () => {
     expect(fileContents).toContain(imageWithPath)
+  })
+})
+
+describe("Authors", () => {
+  let authorsFolder = fs.readdirSync(path.join(destDir, "authors"))
+
+  test("author from page exists in authors folder" , () => {
+    let page = path.join(destDir, "sample-page.md")
+    const file = fs.readFileSync(page, "utf-8")
+    const pageJson = fm(file)
+
+    let authors = authorsFolder
+      .map(author => author.replace(/.md$/, ''))
+
+    const authorPage = authors.some(author => pageJson.attributes.authors.includes(author))
+    
+    expect(authorPage).toBe(true)
+  })
+
+  test("author pages have id and name fields", () => {
+    authorsFolder.map(file => {
+      const page = fs.readFileSync(path.join(destDir, `authors/${file}`), "utf-8")
+      const pageJson = fm(page)
+      expect(pageJson.attributes).toHaveProperty("id", file.replace(/.md$/, ""))
+      expect(pageJson.attributes).toHaveProperty("name")
+    })
   })
 })
 
