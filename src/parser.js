@@ -49,10 +49,10 @@ function getPostTypes(data, config) {
             "wp_global_styles",
           ].includes(type)
       );
-    return [...new Set(types)]; // remove duplicates
+    return [...new Set([...types, "authors"])]; // remove duplicates
   } else {
     // just plain old vanilla "post" posts
-    return ["blog"];
+    return ["post"];
   }
 }
 
@@ -67,31 +67,33 @@ function collectPosts(data, postTypes, config) {
   let allPosts = [];
   postTypes.forEach((postType) => {
     //use slice before filter for testing smaller amounts
-    const postsForType = getItemsOfType(data, postType)
-      .filter(
-        (post) => post.status[0] !== "trash" && post.status[0] !== "draft"
-      )
-      .map((post) => ({
-        // meta data isn't written to file, but is used to help with other things
-        meta: {
-          id: getPostId(post),
-          slug: getPostSlug(post),
-          coverImageId: getPostCoverImageId(post),
-          type: postType,
-          imageUrls: [],
-        },
-        frontmatter: {
-          title: getPostTitle(post),
-          created: getPostDate(post),
-          categories: getCategories(post),
-          tags: getTags(post),
-          authors: getAuthors(post)
-        },
-        content: translator.getPostContent(post, turndownService, config),
-      }));
+    const postsForType = postType === "authors" 
+      ? collectAuthors(data)
+      : getItemsOfType(data, postType)
+        .filter(
+          (post) => post.status[0] !== "trash" && post.status[0] !== "draft"
+        )
+        .map((post) => ({
+          // meta data isn't written to file, but is used to help with other things
+          meta: {
+            id: getPostId(post),
+            slug: getPostSlug(post),
+            coverImageId: getPostCoverImageId(post),
+            type: postType,
+            imageUrls: [],
+          },
+          frontmatter: {
+            title: getPostTitle(post),
+            created: getPostDate(post),
+            categories: getCategories(post),
+            tags: getTags(post),
+            authors: getAuthors(post)
+          },
+          content: translator.getPostContent(post, turndownService, config),
+        }));
 
     if (postTypes.length > 1) {
-      console.log(`${postsForType.length} "${postType}" posts found.`);
+      console.log(`${postsForType.length} "${postType}" ${postType === "authors" ? "with" : ""} posts found.`);
     }
 
     allPosts.push(...postsForType);
@@ -100,6 +102,7 @@ function collectPosts(data, postTypes, config) {
   if (postTypes.length === 1) {
     console.log(allPosts.length + " posts found.");
   }
+
   return allPosts;
 }
 
@@ -136,7 +139,47 @@ function getPostTitle(post) {
 }
 
 function getAuthors(post) {
-  return post.creator[0].split(" and ")
+  return post.creator[0].split(" and ").map(author => author.toLowerCase().replace(" ", "-"))
+}
+
+function getAuthorsWithPosts(data) {
+  let authors = []
+  const authorList = data.rss.channel[0].author
+  const posts = data.rss.channel[0].item.filter(
+    (post) => post.status[0] !== "trash" && post.status[0] !== "draft" && post.post_type[0] !== "attachment"
+  )
+  authorList.map(author => {
+    const authorWithPost = posts.some(post => post.creator.includes(author['author_login'][0]))
+    if (authorWithPost) authors.push(author)
+  })
+  return authors
+}
+
+function collectAuthors(data) {
+  const authors = getAuthorsWithPosts(data)
+    .map(author => {
+      const slug = author['author_login'][0].toLowerCase().replace(" ", "-")
+      const displayName = author['author_display_name'][0]
+      const firstName = author['author_first_name'][0]
+      const lastName = author['author_last_name'][0]
+
+      return ({
+        meta: {
+          id: slug,
+          slug: decodeURIComponent(slug),
+          type: "authors",
+          imageUrls: [],
+        },
+        frontmatter: {
+          id: slug,
+          name: firstName && lastName
+            ? `${firstName} ${lastName}`
+            : displayName
+        },
+      })
+    })
+
+  return authors
 }
 
 function getPostDate(post) {

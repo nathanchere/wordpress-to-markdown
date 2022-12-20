@@ -42,6 +42,7 @@ async function writeFile(destinationPath, data) {
 }
 
 async function writeMarkdownFilesPromise(posts, config ) {
+    // console.log(posts)
 	// package up posts into payloads
 	let skipCount = 0;
 	let delay = 0;
@@ -93,7 +94,11 @@ async function loadMarkdownFilePromise(post) {
 		}
 	});
 
-	output += `---\n\n${post.content}\n`;
+	if (post.content) {
+      output += `---\n\n${post.content}\n`
+    } else {
+      output += `---\n`
+    }
 	return output;
 }
 
@@ -105,7 +110,7 @@ async function writeImageFilesPromise(posts, config) {
 		// const postPath = getPostPath(post, config);
 		// const imagesDir = path.join(path.dirname(postPath), 'images');
 		const imagesDir = path.join(config.output, 'assets/images');
-		return post.meta.imageUrls.flatMap(imageUrl => {
+		return post.meta.imageUrls?.flatMap(imageUrl => {
 			const filename = shared.getFilenameFromUrl(imageUrl);
 			const isPdfDocument = /.pdf$/.test(filename)
 			const destinationPath = isPdfDocument 
