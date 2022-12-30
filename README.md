@@ -1,6 +1,6 @@
 # wordpress-export-to-markdown
 
-A script that converts a WordPress export XML file into Markdown files suitable for a Flowershow site
+A script that converts a WordPress export XML file into Markdown files suitable for a static sites including [Flowershow](https://flowershow.app).
 
 Wordpress to Flowershow Tutorial: https://flowershow.app/blog/2022-11-30-wordpress-migration
 
