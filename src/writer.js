@@ -173,7 +173,19 @@ function getPostPath(post, config) {
 
 	// create segment for post type if we're dealing with more than just "post"
 	if (config.includeOtherTypes) {
-		pathSegments.push(post.meta.type === "post" ? "blog" : post.meta.type == "page" ? "" : post.meta.type);
+		pathSegments.push(post.meta.type === "post" ? "blog" : post.meta.type);
+	}
+
+	if (post.meta.type == "post"
+		&& config.includeDraftPosts
+		&& post.meta.status == "draft") {
+		pathSegments.push("drafts");
+	}
+
+	if (post.meta.type == "post"
+		&& config.includeTrashedPosts
+		&& post.meta.status == "trash") {
+		pathSegments.push("trash");
 	}
 
 	if (config.yearFolders && post.meta.type !== "page") {

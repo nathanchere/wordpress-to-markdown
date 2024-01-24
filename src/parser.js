@@ -86,6 +86,7 @@ function collectPosts(data, postTypes, config) {
             coverImageId: getPostCoverImageId(post),
             type: postType,
             imageUrls: [],
+            status: post.status,
           },
           frontmatter: {
             title: getPostTitle(post),
@@ -116,7 +117,13 @@ function getPostId(post) {
 }
 
 function getPostSlug(post) {
-  return decodeURIComponent(post.post_name[0]);
+  return slug = decodeURIComponent(post.post_name[0])
+    || post.title[0]
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/[^\p{L}\p{N}]+/gu, "-")
+      .replace(/^-+|-+$/g, "");
 }
 
 function getPostCoverImageId(post) {
