@@ -12,14 +12,21 @@ For the most part this worked great for me when migrating my own blog but there 
 
 Things which are different from upstream:
 
-* in instances where `pubDate` hasn't been set on a post, it will attempt to use `post_date` instead. If that also fails, it will fall back to a default date of 1990/01/01 so processing can continue but it's obvious in the output that the date is a placeholder.
-
 * a config option to include draft posts (excluded by default)
 
 * a config option to include trashed posts (excluded by default)
 
 * gitignore lines added to prevent accidentally commiting Wordpress exports to this repo
 
+* in instances where `pubDate` hasn't been set on a post (for example a post which
+  is still a draft and thus hasn't been published and thus has no publish date), it will attempt to use `post_date` instead. If that also fails, it will fall back to a default date of 1990/01/01 so processing can continue but it's obvious in the output that the date is a placeholder.
+
+* use `pubDate` in Markdown front matter instead of `created` to be more consistent with WordPress and the defaults used by markdown consumers like Astro
+
+// TODO: title
+
+// TODO: updated date on frontmatter?
+ 
 ## Quick Start
 
 You'll need:

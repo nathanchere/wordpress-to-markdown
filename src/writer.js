@@ -26,7 +26,7 @@ async function processPayloadsPromise(payloads, loadFunc) {
 			}
 		}, payload.delay);
 	}));
-	
+
 	const results = await Promise.allSettled(promises);
 	const failedCount = results.filter(result => result.status === 'rejected').length;
 	if (failedCount === 0) {
@@ -41,8 +41,8 @@ async function writeFile(destinationPath, data) {
 	await fs.promises.writeFile(destinationPath, data, 'utf8');
 }
 
-async function writeMarkdownFilesPromise(posts, config ) {
-    // console.log(posts)
+async function writeMarkdownFilesPromise(posts, config) {
+	// console.log(posts)
 	// package up posts into payloads
 	let skipCount = 0;
 	let delay = 0;
@@ -55,7 +55,7 @@ async function writeMarkdownFilesPromise(posts, config ) {
 		} else {
 			const payload = {
 				item: post,
-				name: (!config.includeOtherTypes ? '': post.meta.type === "post" ? "blog" + ' - ' : post.meta.type + ' - ') + post.meta.slug,
+				name: (!config.includeOtherTypes ? '' : post.meta.type === "post" ? "blog" + ' - ' : post.meta.type + ' - ') + post.meta.slug,
 				destinationPath,
 				delay
 			};
@@ -95,10 +95,10 @@ async function loadMarkdownFilePromise(post) {
 	});
 
 	if (post.content) {
-      output += `---\n\n${post.content}\n`
-    } else {
-      output += `---\n`
-    }
+		output += `---\n\n${post.content}\n`
+	} else {
+		output += `---\n`
+	}
 	return output;
 }
 
@@ -113,7 +113,7 @@ async function writeImageFilesPromise(posts, config) {
 		return post.meta.imageUrls?.flatMap(imageUrl => {
 			const filename = shared.getFilenameFromUrl(imageUrl);
 			const isPdfDocument = /.pdf$/.test(filename)
-			const destinationPath = isPdfDocument 
+			const destinationPath = isPdfDocument
 				? path.join(config.output + "/assets", filename)
 				: path.join(imagesDir, filename);
 			if (checkFile(destinationPath)) {
@@ -166,7 +166,7 @@ async function loadImageFilePromise(imageUrl) {
 }
 
 function getPostPath(post, config) {
-	const dt = luxon.DateTime.fromISO(post.frontmatter.created);
+	const dt = luxon.DateTime.fromISO(post.frontmatter.pubDate);
 
 	// start with base output dir
 	const pathSegments = [config.output];

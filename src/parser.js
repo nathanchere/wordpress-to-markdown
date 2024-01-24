@@ -9,7 +9,6 @@ const translator = require("./translator");
 
 
 async function isValidPost(post, config) {
-  debugger;
   return (post.status[0] == "trash" && config.includeTrashedPosts)
     || (post.status[0] == "draft" && config.includeDraftPosts)
     || false;
@@ -90,7 +89,7 @@ function collectPosts(data, postTypes, config) {
           },
           frontmatter: {
             title: getPostTitle(post),
-            created: getPostDate(post),
+            pubDate: getPostDate(post),
             categories: getCategories(post),
             tags: getTags(post),
             authors: getAuthors(post)
