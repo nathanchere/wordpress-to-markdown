@@ -7,6 +7,14 @@ const shared = require("./shared");
 const settings = require("./settings");
 const translator = require("./translator");
 
+
+async function isValidPost(post, config) {
+  debugger;
+  return (post.status[0] == "trash" && config.includeTrashedPosts)
+    || (post.status[0] == "draft" && config.includeDraftPosts)
+    || false;
+}
+
 async function parseFilePromise(config) {
   console.log("\nParsing...");
   const content = await fs.promises.readFile(config.input, "utf8");
@@ -68,11 +76,9 @@ function collectPosts(data, postTypes, config) {
   postTypes.forEach((postType) => {
     //use slice before filter for testing smaller amounts
     const postsForType = postType === "authors"
-      ? collectAuthors(data)
+      ? collectAuthors(data, config)
       : getItemsOfType(data, postType)
-        .filter(
-          (post) => post.status[0] !== "trash" && post.status[0] !== "draft"
-        )
+        .filter((post) => isValidPost(post, config))
         .map((post) => ({
           // meta data isn't written to file, but is used to help with other things
           meta: {
@@ -142,11 +148,11 @@ function getAuthors(post) {
   return post.creator[0].split(" and ").map(author => author.toLowerCase().replace(" ", "-"))
 }
 
-function getAuthorsWithPosts(data) {
+function getAuthorsWithPosts(data, config) {
   let authors = []
   const authorList = data.rss.channel[0].author
   const posts = data.rss.channel[0].item.filter(
-    (post) => post.status[0] !== "trash" && post.status[0] !== "draft" && post.post_type[0] !== "attachment"
+    (post) => post.post_type[0] !== "attachment" && isValidPost(post, config)
   )
   authorList.map(author => {
     const authorWithPost = posts.some(post => post.creator.includes(author['author_login'][0]))
@@ -155,8 +161,8 @@ function getAuthorsWithPosts(data) {
   return authors
 }
 
-function collectAuthors(data) {
-  const authors = getAuthorsWithPosts(data)
+function collectAuthors(data, config) {
+  const authors = getAuthorsWithPosts(data, config)
     .map(author => {
       const slug = author['author_login'][0].toLowerCase().replace(" ", "-")
       const displayName = author['author_display_name'][0]

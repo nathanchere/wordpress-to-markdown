@@ -35,14 +35,14 @@ const options = [
 	},
 	{
 		name: 'year-folders',
-		aliases: ['yearfolders', 'yearmonthfolders','yearmonthdayfolders'],
+		aliases: ['yearfolders', 'yearmonthfolders', 'yearmonthdayfolders'],
 		type: 'boolean',
 		description: 'Create year folders',
 		default: false
 	},
 	{
 		name: 'month-folders',
-		aliases: ['yearmonthfolders','yearmonthdayfolders'],
+		aliases: ['yearmonthfolders', 'yearmonthdayfolders'],
 		type: 'boolean',
 		description: 'Create month folders',
 		default: false
@@ -87,6 +87,18 @@ const options = [
 		type: 'boolean',
 		description: 'Include custom post types and pages',
 		default: false
+	},
+	{
+		name: 'include-draft-posts',
+		type: 'boolean',
+		description: 'Include posts in draft status',
+		default: false
+	},
+	{
+		name: 'include-trashed-posts',
+		type: 'boolean',
+		description: 'Include posts which have been soft-deleted',
+		default: false
 	}
 ];
 
@@ -104,7 +116,7 @@ async function getConfig(argv) {
 			type: option.prompt,
 			message: option.description + '?',
 			default: option.default,
-	
+
 			// these are not used for all option types and that's fine
 			filter: option.coerce,
 			validate: option.validate
@@ -157,7 +169,7 @@ function replaceAliases(argv) {
 				if (arg.includes('--' + alias)) {
 					replaced.push(arg.replace('--' + alias, '--' + option.name));
 					aliasFound = true;
-				}	
+				}
 			});
 		});
 

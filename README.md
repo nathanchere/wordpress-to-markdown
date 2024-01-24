@@ -6,6 +6,20 @@ Wordpress to Flowershow Tutorial: https://flowershow.app/blog/2022-11-30-wordpre
 
 Each post is saved as a separate Markdown file with appropriate frontmatter. Images are also downloaded and saved. Embedded content from YouTube, Twitter, CodePen, etc. is carefully preserved.
 
+## Motivation for this fork
+
+For the most part this worked great for me when migrating my own blog but there were some issues particularly with draft posts and some frontmatter conventions.
+
+Things which are different from upstream:
+
+* in instances where `pubDate` hasn't been set on a post, it will attempt to use `post_date` instead. If that also fails, it will fall back to a default date of 1990/01/01 so processing can continue but it's obvious in the output that the date is a placeholder.
+
+* a config option to include draft posts (excluded by default)
+
+* a config option to include trashed posts (excluded by default)
+
+* gitignore lines added to prevent accidentally commiting Wordpress exports to this repo
+
 ## Quick Start
 
 You'll need:
