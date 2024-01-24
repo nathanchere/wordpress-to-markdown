@@ -93,7 +93,7 @@ function collectPosts(data, postTypes, config) {
             pubDate: getPostDate(post),
             categories: getCategories(post),
             tags: getTags(post),
-            authors: getAuthors(post)
+            authors: getAuthors(post, config)
           },
           content: translator.getPostContent(post, turndownService, config),
         }));
@@ -150,7 +150,8 @@ function getPostTitle(post) {
   }
 }
 
-function getAuthors(post) {
+function getAuthors(post, config) {
+  if (!config.includeAuthorInPosts) return [];
   return post.creator[0].split(" and ").map(author => author.toLowerCase().replace(" ", "-"))
 }
 

@@ -1,8 +1,6 @@
 # wordpress-export-to-markdown
 
-A script that converts a WordPress export XML file into Markdown files suitable for a static sites including [Flowershow](https://flowershow.app).
-
-Wordpress to Flowershow Tutorial: https://flowershow.app/blog/2022-11-30-wordpress-migration
+A script that converts a WordPress export XML file into Markdown files suitable for a static site.
 
 Each post is saved as a separate Markdown file with appropriate frontmatter. Images are also downloaded and saved. Embedded content from YouTube, Twitter, CodePen, etc. is carefully preserved.
 
@@ -12,9 +10,13 @@ For the most part this worked great for me when migrating my own blog but there 
 
 Things which are different from upstream:
 
-* a config option to include draft posts (excluded by default)
+* the previous fork was biased towards targetting [Flowershow](https://flowershow.app). This fork favours [Astro](https://astro.build) by default.
 
-* a config option to include trashed posts (excluded by default)
+* option to include draft blog posts in output (excluded by default)
+
+* option to include trashed blog posts in output (excluded by default)
+
+* option to exclude author from front matter of posts (included by default)
 
 * gitignore lines added to prevent accidentally commiting Wordpress exports to this repo
 
@@ -28,9 +30,6 @@ Things which are different from upstream:
 
 * use `pubDate` in Markdown front matter instead of `created` to be more consistent with WordPress and the defaults used by markdown consumers like Astro
 
-// TODO: title
-
-// TODO: updated date on frontmatter?
  
 ## Quick Start
 
@@ -176,6 +175,30 @@ Whether or not to download and save images scraped from `<img>` tags in post bod
 - Default: `false`
 
 Some WordPress sites make use of a `"page"` post type and/or custom post types. Set this to `true` to include these post types in the results. Posts will be organized into post type folders.
+
+### Include custom post types and pages?
+
+- Argument: `--include-draft-posts`
+- Type: `boolean`
+- Default: `false`
+
+Generate Markdown files for blog posts which are in 'draft' status.
+
+### Include custom post types and pages?
+
+- Argument: `--include-trashed-posts`
+- Type: `boolean`
+- Default: `false`
+
+Generate Markdown files for blog posts which have been soft-deleted.
+
+### Include custom post types and pages?
+
+- Argument: `--include-author-in-posts`
+- Type: `boolean`
+- Default: `true`
+
+If there is only one author on your Wordpress site then there's no point including this in the front matter of every Markdown file generated.
 
 ## Advanced Settings
 
