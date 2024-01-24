@@ -67,7 +67,7 @@ function collectPosts(data, postTypes, config) {
   let allPosts = [];
   postTypes.forEach((postType) => {
     //use slice before filter for testing smaller amounts
-    const postsForType = postType === "authors" 
+    const postsForType = postType === "authors"
       ? collectAuthors(data)
       : getItemsOfType(data, postType)
         .filter(
@@ -132,7 +132,7 @@ function getPostTitle(post) {
   if (re.test(post.title[0])) {
     const title = post.post_name[0].replace("-", " ")
     // capitalize each word
-    return title.replace(/(^\w|\s\w)(\S*)/g, (_,m1,m2) => m1.toUpperCase()+m2.toLowerCase());
+    return title.replace(/(^\w|\s\w)(\S*)/g, (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase());
   } else {
     return post.title[0];
   }
@@ -183,7 +183,23 @@ function collectAuthors(data) {
 }
 
 function getPostDate(post) {
-  const dateTime = luxon.DateTime.fromRFC2822(post.pubDate[0], { zone: "utc" });
+  const extractDate = (post) => {
+    var result = luxon.DateTime.fromRFC2822(post.pubDate[0], { zone: "utc" });
+
+    if (!result.isValid) {
+      // In some cases like drafts, pubDate will be empty so use a fallback
+      result = luxon.DateTime.fromISO(post.post_date[0].replace(' ', 'T'));
+    }
+
+    if (!result.isValid) {
+      // If all else fails, use a clearly fake date to allow processing to continue
+      luxon.DateTime.fromObject({ year: 1990, month: 1, day: 1 });
+    }
+
+    return result;
+  };
+
+  const dateTime = extractDate(post);
 
   if (settings.custom_date_formatting) {
     return dateTime.toFormat(settings.custom_date_formatting);
