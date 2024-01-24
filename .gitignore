@@ -5,3 +5,6 @@ tmp/
 
 #ignore specific filenames
 .DS_Store
+
+*.xml
+!tests/**/*.xml
