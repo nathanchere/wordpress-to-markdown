@@ -28,11 +28,13 @@ async function processPayloadsPromise(payloads, loadFunc) {
 	}));
 
 	const results = await Promise.allSettled(promises);
-	const failedCount = results.filter(result => result.status === 'rejected').length;
+	const failed = results.filter(result => result.status === 'rejected');
+	const failedCount = failed.length;
 	if (failedCount === 0) {
 		console.log('Done, got them all!');
 	} else {
-		console.log('Done, but with ' + chalk.red(failedCount + ' failed') + '.');
+		console.log('Done, but with ' + chalk.red(failedCount + ' failed') + ':');
+		failed.forEach(result => console.log(result.reason));
 	}
 }
 
