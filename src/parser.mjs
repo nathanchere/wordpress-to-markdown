@@ -1,11 +1,11 @@
-const fs = require("fs");
-const path = require("path")
-const luxon = require("luxon");
-const xml2js = require("xml2js");
+const fs = await import("fs");
+const path = await import("path")
+const luxon = await import("luxon");
+const xml2js = await import("xml2js");
 
-const shared = require("./shared");
-const settings = require("./settings");
-const translator = require("./translator");
+const { getFilenameFromUrl } = await import("./shared.mjs");
+const settings = await import("./settings.mjs");
+const translator = await import("./translator.mjs");
 
 
 async function isValidPost(post, config) {
@@ -14,7 +14,7 @@ async function isValidPost(post, config) {
     || false;
 }
 
-async function parseFilePromise(config) {
+export async function parseFilePromise(config) {
   console.log("\nParsing...");
   const content = await fs.promises.readFile(config.input, "utf8");
   const data = await xml2js.parseStringPromise(content, {
@@ -117,7 +117,7 @@ function getPostId(post) {
 }
 
 function getPostSlug(post) {
-  return slug = decodeURIComponent(post.post_name[0])
+  return decodeURIComponent(post.post_name[0])
     || post.title[0]
       .toLowerCase()
       .replace(/\s+/g, "-")
@@ -302,7 +302,7 @@ function mergeImagesIntoPosts(images, posts, config) {
       // this image was set as the featured image for this post
       if (image.id === post.meta.coverImageId) {
         shouldAttach = true;
-        post.frontmatter.image = path.join(`/${config.assets}`, "images", shared.getFilenameFromUrl(image.url));
+        post.frontmatter.image = path.join(`/${config.assets}`, "images", getFilenameFromUrl(image.url));
       }
 
       if (shouldAttach && !post.meta.imageUrls.includes(image.url)) {
@@ -311,5 +311,3 @@ function mergeImagesIntoPosts(images, posts, config) {
     });
   });
 }
-
-exports.parseFilePromise = parseFilePromise;

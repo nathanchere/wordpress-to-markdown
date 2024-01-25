@@ -1,8 +1,8 @@
-const turndown = require('turndown');
-const turndownPluginGfm = require('turndown-plugin-gfm');
+import TurndownService from 'turndown';
+const turndownPluginGfm = await import('turndown-plugin-gfm');
 
-function initTurndownService() {
-	const turndownService = new turndown({
+export function initTurndownService() {
+	const turndownService = new TurndownService({
 		headingStyle: 'atx',
 		bulletListMarker: '-',
 		codeBlockStyle: 'fenced'
@@ -56,7 +56,7 @@ function initTurndownService() {
 	return turndownService;
 }
 
-function getPostContent(post, turndownService, config) {
+export function getPostContent(post, turndownService, config) {
 	let content = post.encoded[0];
 
 	// insert an empty div element between double line breaks
@@ -87,6 +87,3 @@ function getPostContent(post, turndownService, config) {
 
 	return content;
 }
-
-exports.initTurndownService = initTurndownService;
-exports.getPostContent = getPostContent;

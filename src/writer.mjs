@@ -1,13 +1,13 @@
-const chalk = require('chalk');
-const fs = require('fs');
-const luxon = require('luxon');
-const path = require('path');
-const requestPromiseNative = require('request-promise-native');
+import chalk from 'chalk';
+const fs = await import('fs');
+const luxon = await import('luxon');
+const path = await import('path');
+import get from 'axios';
 
-const shared = require('./shared');
-const settings = require('./settings');
+const { getFilenameFromUrl } = await import('./shared.mjs');
+const settings = import('./settings.mjs');
 
-async function writeFilesPromise(posts, config) {
+export async function writeFilesPromise(posts, config) {
 	await writeMarkdownFilesPromise(posts, config);
 	await writeImageFilesPromise(posts, config);
 }
@@ -16,8 +16,8 @@ async function processPayloadsPromise(payloads, loadFunc) {
 	const promises = payloads.map(payload => new Promise((resolve, reject) => {
 		setTimeout(async () => {
 			try {
-				const data = await loadFunc(payload.item);
-				await writeFile(payload.destinationPath, data);
+				const result = await loadFunc(payload.item);
+				await writeFile(payload.destinationPath, result.data);
 				console.log(chalk.green('[OK]') + ' ' + payload.name);
 				resolve();
 			} catch (ex) {
@@ -115,7 +115,7 @@ async function writeImageFilesPromise(posts, config) {
 		// const imagesDir = path.join(path.dirname(postPath), 'images');
 		const imagesDir = path.join(config.output, 'assets/images');
 		return post.meta.imageUrls?.flatMap(imageUrl => {
-			const filename = shared.getFilenameFromUrl(imageUrl);
+			const filename = getFilenameFromUrl(imageUrl);
 			const isPdfDocument = /.pdf$/.test(filename)
 			const destinationPath = isPdfDocument
 				? path.join(config.output + "/assets", filename)
@@ -152,7 +152,7 @@ async function loadImageFilePromise(imageUrl) {
 
 	let buffer;
 	try {
-		buffer = await requestPromiseNative.get({
+		buffer = await get({
 			url,
 			encoding: null, // preserves binary encoding
 			headers: {
@@ -223,5 +223,3 @@ function getPostPath(post, config) {
 function checkFile(path) {
 	return fs.existsSync(path);
 }
-
-exports.writeFilesPromise = writeFilesPromise;

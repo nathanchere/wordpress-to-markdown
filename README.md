@@ -94,6 +94,14 @@ You'll need to run the script locally (not using `npx`) to make use of advanced 
 
 ## Changelog  
 
+* v2.4.0 (2024-01-25)
+
+  - update a lot of dependencies
+  - `.js` -> `.mjs`
+  - `request-promise-native` -> `axios`
+
+
+
 * v2.3.0 (2024-01-25)
 
   - fork favouring front matter following [Astro](https://astro.build) conventions by default

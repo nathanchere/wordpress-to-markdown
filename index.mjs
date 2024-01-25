@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
-const compareVersions = import('compare-versions');
-const path = import('path');
+const path = await import('path');
 
-const wizard = require('./src/wizard');
-const parser = require('./src/parser');
-const writer = import('./src/writer.js');
+const { getConfig } = await import('./src/wizard.mjs');
+const parser = await import('./src/parser.mjs');
+const writer = await import('./src/writer.mjs');
 
 (async () => {
 	// parse any command line arguments and run wizard
-	const config = await wizard.getConfig(process.argv);
+	const config = await getConfig(process.argv);
 
 	// parse data from XML and do Markdown translations
 	const posts = await parser.parseFilePromise(config)

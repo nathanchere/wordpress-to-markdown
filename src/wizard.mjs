@@ -1,10 +1,8 @@
-const camelcase = require('camelcase');
-const commander = require('commander');
-const fs = require('fs');
-const inquirer = require('inquirer');
-const path = require('path');
-
-const package = require('../package.json');
+const camelcase = await import('camelcase');
+const { program } = await import('commander');
+const fs = await import('fs');
+const inquirer = await import('inquirer');
+const path = await import('path');
 
 // all user options for command line and wizard are declared here
 const options = [
@@ -108,7 +106,7 @@ const options = [
 	}
 ];
 
-async function getConfig(argv) {
+export async function getConfig(argv) {
 	extendOptionsData();
 	const unaliasedArgv = replaceAliases(argv);
 	const program = parseCommandLine(unaliasedArgv);
@@ -189,12 +187,11 @@ function replaceAliases(argv) {
 
 function parseCommandLine(argv) {
 	// setup for help output
-	commander
+	program
 		.name('node index.js')
-		.version('v' + package.version, '-v, --version', 'Display version number')
 		.helpOption('-h, --help', 'See the thing you\'re looking at right now')
 		.on('--help', () => {
-			console.log('\nMore documentation is at https://github.com/lonekorean/wordpress-export-to-markdown');
+			console.log('\nMore documentation is at https://gitlab.com/nathanchere/wordpress-export-to-markdown');
 		});
 
 	options.forEach(input => {
@@ -205,10 +202,10 @@ function parseCommandLine(argv) {
 			input.isProvided = true;
 			return input.coerce(value);
 		};
-		commander.option(flag, input.description, coerce, input.default);
+		program.option(flag, input.description, coerce, input.default);
 	});
 
-	return commander.parse(argv);
+	return program.parse(argv);
 }
 
 function coerceBoolean(value) {
@@ -229,5 +226,3 @@ function validateFile(value) {
 
 	return isValid ? true : 'Unable to find file: ' + path.resolve(value);
 }
-
-exports.getConfig = getConfig;
