@@ -22,7 +22,7 @@ async function processPayloadsPromise(payloads, loadFunc) {
 				resolve();
 			} catch (ex) {
 				console.log(chalk.red('[FAILED]') + ' ' + payload.name + ' ' + chalk.red('(' + ex.toString() + ')'));
-				reject();
+				reject({ payload: payload.name, error: ex.toString() });
 			}
 		}, payload.delay);
 	}));
@@ -33,8 +33,10 @@ async function processPayloadsPromise(payloads, loadFunc) {
 	if (failedCount === 0) {
 		console.log('Done, got them all!');
 	} else {
-		console.log('Done, but with ' + chalk.red(failedCount + ' failed') + ':');
-		failed.forEach(result => console.log(result.reason));
+		console.log('Done, but with ' + chalk.red(failedCount + ' failed payloads') + ':');
+		failed.forEach(result =>
+			console.log(chalk.red("[X] ") + result.reason.payload + ': ' + result.reason.error)
+		);
 	}
 }
 
