@@ -1,21 +1,13 @@
 #!/usr/bin/env node
 
-const compareVersions = require('compare-versions');
-const path = require('path');
-const process = require('process');
+const compareVersions = import('compare-versions');
+const path = import('path');
 
 const wizard = require('./src/wizard');
 const parser = require('./src/parser');
-const writer = require('./src/writer');
+const writer = import('./src/writer.js');
 
 (async () => {
-	// Node version check
-	const requiredVersion = '12.14.0';
-	const currentVersion = process.versions.node;
-	if (compareVersions(currentVersion, requiredVersion) === -1) {
-		throw `This script requires Node v${requiredVersion} or higher, but you are using v${currentVersion}.`;
-	}
-
 	// parse any command line arguments and run wizard
 	const config = await wizard.getConfig(process.argv);
 
