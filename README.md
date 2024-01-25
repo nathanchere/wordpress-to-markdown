@@ -107,6 +107,7 @@ You'll need to run the script locally (not using `npx`) to make use of advanced 
   - in instances where `pubDate` hasn't been set on a post (for example on draft blog posts), it will attempt to use `post_date` instead. If that also fails, it will fall back to a default date of 1990/01/01 so processing can continue but it's obvious in the output that the date is a placeholder
   - in instances where a slug hasn't been set (for example on draft blog posts), the title will be used in the output file name instead.
   - uses `pubDate` in Markdown front matter instead of `created` to be more consistent with WordPress and the defaults used by markdown consumers like Astro
+  - display summary of payload failures at the end of processing
 
 * v2.2.2
 
