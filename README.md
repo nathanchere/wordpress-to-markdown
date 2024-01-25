@@ -3,37 +3,12 @@
 A script that converts a WordPress export XML file into Markdown files suitable for a static site.
 
 Each post is saved as a separate Markdown file with appropriate frontmatter. Images are also downloaded and saved. Embedded content from YouTube, Twitter, CodePen, etc. is carefully preserved.
-
-## Motivation for this fork
-
-For the most part this worked great for me when migrating my own blog but there were some issues particularly with draft posts and some frontmatter conventions.
-
-Things which are different from upstream:
-
-* the previous fork was biased towards targetting [Flowershow](https://flowershow.app). This fork favours [Astro](https://astro.build) by default.
-
-* option to include draft blog posts in output (excluded by default)
-
-* option to include trashed blog posts in output (excluded by default)
-
-* option to exclude author from front matter of posts (included by default)
-
-* gitignore lines added to prevent accidentally commiting Wordpress exports to this repo
-
-* 'Page' entries will be exported under a 'page' folder (i.e. pages are no longer a special case meta type)
-
-* Draft and trashed blog posts will be exported under corresponding 'draft' and 'trash' folders.
-
-* in instances where `pubDate` hasn't been set on a post (for example on draft blog posts), it will attempt to use `post_date` instead. If that also fails, it will fall back to a default date of 1990/01/01 so processing can continue but it's obvious in the output that the date is a placeholder.
-
-* in instances where a slug hasn't been set (for example on draft blog posts), the title will be used in the output file name instead.
-
-* use `pubDate` in Markdown front matter instead of `created` to be more consistent with WordPress and the defaults used by markdown consumers like Astro
-
  
+
 ## Quick Start
 
 You'll need:
+
 - [Node.js](https://nodejs.org/) v12.14 or later
 - Your [WordPress export file](https://wordpress.org/support/article/tools-export-screen/) (be sure to export "All content" if you want to save images and/or pages)
 
@@ -61,147 +36,92 @@ The wizard will still ask you about any options not specifed on the command line
 
 ## Options
 
-### Use wizard?
+- `--wizard`
+    - Type: `boolean`, default: `true`
+    - Enable to have the script prompt you for each option. Disable to skip the wizard and use default values for any options not specified via the command line.
 
-- Argument: `--wizard`
-- Type: `boolean`
-- Default: `true`
+- `--input`
+    - Type: `file` (as a path string), default: `export.xml`
+    - The path to the WordPress export file that you want to parse. It is recommended that you drop your WordPress export file into the same directory that you run this script from so it's easy to find.
 
-Enable to have the script prompt you for each option. Disable to skip the wizard and use default values for any options not specified via the command line.
+- `--output`
+    - Type: `folder` (as a path string), default: `output`
+    - The path to the output directory where Markdown and image files will be saved. If it does not exist, it will be created for you.
 
-### Path to WordPress export file?
+- `--year-folders`, `--month-folders`, `--day-folders`
+    - Type: `boolean`, default: `false`
+    - Whether or not to organize output files into folders by year and/or month and/or day.
 
-- Argument: `--input`
-- Type: `file` (as a path string)
-- Default: `export.xml`
+- `--post-folders`
+    - Type: `boolean`, default: `true`
+    - Whether or not to save files and images into post folders. If `true`, the post slug is used for the folder name and the post's Markdown file is named `index.md`. Each post folder will have its own `/images` folder. If `false`, the post slug is used to name the post's Markdown file. These files will be side-by-side and images will go into a shared `/images` folder. Either way, this can be combined with with `--year-folders` and `--month-folders`, in which case the above output will be organized under the appropriate year and month folders.
 
-The path to the WordPress export file that you want to parse. It is recommended that you drop your WordPress export file into the same directory that you run this script from so it's easy to find.
+- `--prefix-date`
+    - Type: `boolean`, default: `false`
+    - Whether or not to prepend the post date to the post slug when naming a post's folder or file. If `--post-folders` is `true`, this affects the folder. If `--post-folders` is `false`, this affects the file.
 
-### Path to output folder?
+- `--save-attached-images`
+    - Type: `boolean`, default: `true`
+    - Whether or not to download and save images attached to posts. Generally speaking, these are images that were uploaded by using **Add Media** or **Set Featured Image** when editing a post in WordPress. Images are saved into `/images`.
 
-- Argument: `--output`
-- Type: `folder` (as a path string)
-- Default: `output`
+- `--save-scraped-images`
+    - Type: `boolean`, default: `true`
+    - Whether or not to download and save images scraped from `<img>` tags in post body content. Images are saved into `/images`. The `<img>` tags are updated to point to where the images are saved.
 
-The path to the output directory where Markdown and image files will be saved. If it does not exist, it will be created for you.
+- `--include-other-types`
+    - Type: `boolean`, default: `false`
+    - Some WordPress sites make use of a `"page"` post type and/or custom post types. Set this to `true` to include these post types in the results. Posts will be organized into post type folders.
 
-### Create year folders?
+- `--include-draft-posts`
+    - Type: `boolean`, default: `false`
+    - Generate Markdown files for blog posts which are in 'draft' status.
 
-- Argument: `--year-folders`
-- Type: `boolean`
-- Default: `false`
+- `--include-trashed-posts`
+    - Type: `boolean`, default: `false`
+    - Generate Markdown files for blog posts which have been soft-deleted.
 
-Whether or not to organize output files into folders by year.
+- `--include-author-in-posts`
+    - Type: `boolean`, default: `true`
+    - If there is only one author on your Wordpress site then there's no point including this in the front matter of every Markdown file generated.
 
-### Create month folders?
 
-- Argument: `--month-folders`
-- Type: `boolean`
-- Default: `false`
-
-Whether or not to organize output files into folders by month. You'll probably want to combine this with `--year-folders` to organize files by year then month.
-
-### Create a folder for each post?
-
-- Argument: `--post-folders`
-- Type: `boolean`
-- Default: `true`
-
-Whether or not to save files and images into post folders.
-
-If `true`, the post slug is used for the folder name and the post's Markdown file is named `index.md`. Each post folder will have its own `/images` folder.
-
-    /first-post
-        /images
-            potato.png
-        index.md
-    /second-post
-        /images
-            carrot.jpg
-            celery.jpg
-        index.md
-
-If `false`, the post slug is used to name the post's Markdown file. These files will be side-by-side and images will go into a shared `/images` folder.
-
-    /images
-        carrot.jpg
-        celery.jpg
-        potato.png
-    first-post.md
-    second-post.md
-
-Either way, this can be combined with with `--year-folders` and `--month-folders`, in which case the above output will be organized under the appropriate year and month folders.
-
-### Prefix post folders/files with date?
-
-- Argument: `--prefix-date`
-- Type: `boolean`
-- Default: `false`
-
-Whether or not to prepend the post date to the post slug when naming a post's folder or file.
-
-If `--post-folders` is `true`, this affects the folder.
-
-    /2019-10-14-first-post
-        index.md
-    /2019-10-23-second-post
-        index.md
-
-If `--post-folders` is `false`, this affects the file.
-
-    2019-10-14-first-post.md
-    2019-10-23-second-post.md
-
-### Save images attached to posts?
-
-- Argument: `--save-attached-images`
-- Type: `boolean`
-- Default: `true`
-
-Whether or not to download and save images attached to posts. Generally speaking, these are images that were uploaded by using **Add Media** or **Set Featured Image** when editing a post in WordPress. Images are saved into `/images`.
-
-### Save images scraped from post body content?
-
-- Argument: `--save-scraped-images`
-- Type: `boolean`
-- Default: `true`
-
-Whether or not to download and save images scraped from `<img>` tags in post body content. Images are saved into `/images`. The `<img>` tags are updated to point to where the images are saved.
-
-### Include custom post types and pages?
-
-- Argument: `--include-other-types`
-- Type: `boolean`
-- Default: `false`
-
-Some WordPress sites make use of a `"page"` post type and/or custom post types. Set this to `true` to include these post types in the results. Posts will be organized into post type folders.
-
-### Include custom post types and pages?
-
-- Argument: `--include-draft-posts`
-- Type: `boolean`
-- Default: `false`
-
-Generate Markdown files for blog posts which are in 'draft' status.
-
-### Include custom post types and pages?
-
-- Argument: `--include-trashed-posts`
-- Type: `boolean`
-- Default: `false`
-
-Generate Markdown files for blog posts which have been soft-deleted.
-
-### Include custom post types and pages?
-
-- Argument: `--include-author-in-posts`
-- Type: `boolean`
-- Default: `true`
-
-If there is only one author on your Wordpress site then there's no point including this in the front matter of every Markdown file generated.
-
-## Advanced Settings
+### Advanced Settings
 
 You can edit [settings.js](https://github.com/lonekorean/wordpress-export-to-markdown/blob/master/src/settings.js) to tweak advanced settings. This includes things like throttling image downloads or customizing the date format in frontmatter.
 
 You'll need to run the script locally (not using `npx`) to make use of advanced settings.
+
+
+## Changelog  
+
+* v2.3.0 (2024-01-25)
+
+  - fork favouring front matter following [Astro](https://astro.build) conventions by default
+  - dependencies updated; misc fixes to accommodate some breaking changes
+  - option to include draft blog posts in output (excluded by default)
+  - option to include trashed blog posts in output (excluded by default)
+  - option to exclude author from front matter of posts (included by default)
+  - gitignore lines added to prevent accidentally commiting Wordpress exports to this repo
+  - 'Page' entries will be exported under a 'page' folder (i.e. pages are no longer a special case meta type)
+  - Draft and trashed blog posts will be exported under corresponding 'draft' and 'trash' folders
+  - in instances where `pubDate` hasn't been set on a post (for example on draft blog posts), it will attempt to use `post_date` instead. If that also fails, it will fall back to a default date of 1990/01/01 so processing can continue but it's obvious in the output that the date is a placeholder
+  - in instances where a slug hasn't been set (for example on draft blog posts), the title will be used in the output file name instead.
+  - uses `pubDate` in Markdown front matter instead of `created` to be more consistent with WordPress and the defaults used by markdown consumers like Astro
+
+* v2.2.2
+
+  - see [flowershow repo](https://github.com/flowershow/wordpress-to-markdown) and [lonekorean repo](https://github.com/lonekorean/wordpress-export-to-markdown) for previous versions
+
+
+## License
+
+MIT License
+
+Copyright (c) 2018 Will Boyd
+Copyright (c) 2024 Nathan Chere
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
