@@ -99,6 +99,12 @@ const options = [
 		type: 'boolean',
 		description: 'Include posts which have been soft-deleted',
 		default: false
+	},
+	{
+		name: 'include-author-in-posts',
+		type: 'boolean',
+		description: 'Include the author in the front matter of blog posts',
+		default: true
 	}
 ];
 
